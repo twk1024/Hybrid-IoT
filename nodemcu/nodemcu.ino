@@ -4,14 +4,25 @@
  */
 
 #include <ESP8266WiFiMulti.h>
+#include <InfluxDb.h>
 #include <LiquidCrystal_I2C.h>
 #include <dht11.h>
 
-#define WIFI_SSID "ssid"
+#define INFLUXDB_HOST "address" // InfluxDB Information
+#define INFLUXDB_PORT 8086
+#define INFLUXDB_DATABASE "database"
+#define INFLUXDB_USER "user"
+#define INFLUXDB_PASS "password"
+
+#define DEVICE_NAME "ESP8266" // Hardware Information
+#define DEVICE_LOCATION "location"
+
+#define WIFI_SSID "ssid" // WiFi Information
 #define WIFI_PASS "password"
 
 ESP8266WiFiMulti WiFiMulti;
 LiquidCrystal_I2C lcd(0x27, D1, D2);
+Influxdb influx(INFLUXDB_HOST, INFLUXDB_PORT); // Connect to InfluxDB
 dht11 DHT11;
 
 void setup()
@@ -25,6 +36,8 @@ void setup()
   Serial.println("WiFi has been connected");
   Serial.print("IP: ");
   Serial.println(WiFi.localIP());
+
+  influx.setDbAuth(INFLUXDB_DATABASE, INFLUXDB_USER, INFLUXDB_PASS);
 
   lcd.begin(); // Start LCD display
   lcd.backlight();
@@ -67,6 +80,13 @@ void loop()
     digitalWrite(D0, HIGH); // Turn on green LED and turn off red LED
     digitalWrite(D4, LOW);
   }
+
+  InfluxData row("data"); // Insert data to InfluxDB
+  row.addTag("device", DEVICE_NAME);
+  row.addTag("location", DEVICE_LOCATION);
+  row.addValue("temperature", (float)DHT11.temperature);
+  row.addValue("humidity", (float)DHT11.humidity);
+  influx.write(row);
   
   delay(5000); // Delay 5 seconds
 }
