@@ -3,15 +3,28 @@
  * Coded by Taewon Kim
  */
 
+#include <ESP8266WiFiMulti.h>
 #include <LiquidCrystal_I2C.h>
 #include <dht11.h>
 
+#define WIFI_SSID "ssid"
+#define WIFI_PASS "password"
+
+ESP8266WiFiMulti WiFiMulti;
 LiquidCrystal_I2C lcd(0x27, D1, D2);
 dht11 DHT11;
 
 void setup()
 {
   Serial.begin(115200); // Set boardrate to 115200
+
+  WiFiMulti.addAP(WIFI_SSID, WIFI_PASS); // Connect to WiFi
+  while (WiFiMulti.run() != WL_CONNECTED) {
+    delay(100); // Delay 0.1 seconds
+  }
+  Serial.println("WiFi has been connected");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
 
   lcd.begin(); // Start LCD display
   lcd.backlight();
