@@ -8,14 +8,27 @@
 #include <LiquidCrystal_I2C.h>
 #include <dht11.h>
 
-#define INFLUXDB_HOST "address" // InfluxDB Information
+/* INFLUXDB_HOST: Enter the host address of the InfluxDB server.
+ * INFLUXDB_PORT: Default value is 8086. Change this value if you've changed the InfluxDB port.
+ * INFLUXDB_DATABASE: Enter name of the database which the data will be inserted.
+ * INFLUXDB_USER/PASS: Enter the username/password of the InfluxDB for authentication.
+ */
+#define INFLUXDB_HOST "address"
 #define INFLUXDB_PORT 8086
 #define INFLUXDB_DATABASE "database"
 #define INFLUXDB_USER "user"
 #define INFLUXDB_PASS "password"
 
-#define DEVICE_NAME "ESP8266" // Hardware Information
+/* DEVICE_ID: Enter 6-digit unique ID for recognizing the device information. 
+ *  ID should be formatted as Country, City, District, Village, and 2-digit number.
+ * DEVICE_NAME: Enter name of the hardware.
+ * DEVICE_LOCATION: Enter location.
+ * DEVICE_REGISTER_DATE: Enter the device's first running date. (YY/MM/DD)
+ */
+#define DEVICE_ID ""
+#define DEVICE_NAME "ESP8266" 
 #define DEVICE_LOCATION "location"
+#define DEVICE_REGISTER_DATE ""
 
 #define WIFI_SSID "ssid" // WiFi Information
 #define WIFI_PASS "password"
