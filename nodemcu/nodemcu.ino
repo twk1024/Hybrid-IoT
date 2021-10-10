@@ -96,6 +96,8 @@ void loop()
 
   InfluxData row("data"); // Insert data to InfluxDB
   row.addTag("device", DEVICE_NAME);
+  row.addTag("device_id", DEVICE_ID);
+  row.addTag("device_register_date", DEVICE_REGISTER_DATE);
   row.addTag("location", DEVICE_LOCATION);
   row.addValue("temperature", (float)DHT11.temperature);
   row.addValue("humidity", (float)DHT11.humidity);
