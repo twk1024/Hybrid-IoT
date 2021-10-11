@@ -60,16 +60,64 @@ void setup()
   pinMode(D4, OUTPUT);
 }
 
+int getAirScore(int temp, int humi)
+{
+  int score = 100;
+
+  // Temperature score calculation
+  if(temp >= 40) score = score - 30;
+  else if(temp >= 37 && temp < 40) score = score - 26;
+  else if(temp >= 35 && temp < 37) score = score - 22;
+  else if(temp >= 33 && temp < 35) score = score - 18;
+  else if(temp >= 31 && temp < 33) score = score - 14;
+  else if(temp >= 29 && temp < 31) score = score - 10;
+  else if(temp >= 27 && temp < 29) score = score - 6;
+  else if(temp >= 26 && temp < 27) score = score - 2;
+  else if(temp >= 21 && temp < 26) score = score - 0;
+  else if(temp >= 19 && temp < 21) score = score - 2;
+  else if(temp >= 17 && temp < 19) score = score - 6;
+  else if(temp >= 15 && temp < 17) score = score - 10;
+  else if(temp >= 17 && temp < 19) score = score - 14;
+  else if(temp >= 19 && temp < 21) score = score - 18;
+  else if(temp >= 21 && temp < 23) score = score - 22;
+  else if(temp >= 23 && temp < 25) score = score - 26;
+  else if(temp < 23) score = score - 30;
+
+  // Humidity score calculation
+  if(humi >= 78) score = score - 30;
+  else if(humi >= 75 && humi < 78) score = score - 26;
+  else if(humi >= 72 && humi < 75) score = score - 22;
+  else if(humi >= 69 && humi < 72) score = score - 18;
+  else if(humi >= 66 && humi < 69) score = score - 14;
+  else if(humi >= 63 && humi < 66) score = score - 10;
+  else if(humi >= 60 && humi < 63) score = score - 6;
+  else if(humi >= 55 && humi < 60) score = score - 2;
+  else if(humi >= 45 && humi < 55) score = score - 0;
+  else if(humi >= 40 && humi < 45) score = score - 2;
+  else if(humi >= 37 && humi < 40) score = score - 6;
+  else if(humi >= 34 && humi < 37) score = score - 10;
+  else if(humi >= 31 && humi < 34) score = score - 14;
+  else if(humi >= 28 && humi < 31) score = score - 18;
+  else if(humi >= 25 && humi < 28) score = score - 22;
+  else if(humi >= 22 && humi < 25) score = score - 26;
+  else if(humi < 22) score = score - 30;
+  
+  return score;
+}
+
 void loop()
 {                        
-  int chk = DHT11.read(D5);                   
+  int chk = DHT11.read(D5);
+  int airScore = getAirScore(DHT11.temperature, DHT11.humidity);
+  
   Serial.print("\nHumidity: "); // Get humidity value from DHT11 sensor             
   Serial.print((float)DHT11.humidity, 2);
   Serial.println("%");       
   Serial.print("Temperature: "); // Get temperature value from DHT11 sensor             
   Serial.print((float)DHT11.temperature, 2);
-  Serial.println("C");  
-  delay(2000); // Delay 2 seconds
+  Serial.println("C");
+  Serial.print("AirScore: ");             
+  Serial.print(airScore);
   
   lcd.clear(); // Display Temperature and Humidity to LCD display
   lcd.print("Temp:");
@@ -85,7 +133,7 @@ void loop()
   lcd.setCursor(9,1);
   lcd.print("%");
 
-  if (DHT11.temperature > 30) // If temperature value is higher than 30 degrees
+  if (DHT11.temperature > 28 || DHT11.temperature < 18)
   {
     digitalWrite(D0, LOW); // Turn on red LED and turn off green LED
     digitalWrite(D4, HIGH);             
@@ -101,6 +149,7 @@ void loop()
   row.addTag("location", DEVICE_LOCATION);
   row.addValue("temperature", (float)DHT11.temperature);
   row.addValue("humidity", (float)DHT11.humidity);
+  row.addValue("score", airScore);
   influx.write(row);
   
   delay(5000); // Delay 5 seconds
