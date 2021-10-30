@@ -21,12 +21,12 @@
 
 /* DEVICE_ID: Enter 6-digit unique ID for recognizing the device information. 
  *  ID should be formatted as Country, City, District, Village, and 2-digit number.
- * DEVICE_NAME: Enter name of the hardware.
+ * DEVICE_MODEL: Enter name of the hardware.
  * DEVICE_LOCATION: Enter location.
  * DEVICE_REGISTER_DATE: Enter the device's first running date. (YY/MM/DD)
  */
 #define DEVICE_ID ""
-#define DEVICE_NAME "ESP8266" 
+#define DEVICE_MODEL "ESP8266" 
 #define DEVICE_LOCATION "location"
 #define DEVICE_REGISTER_DATE ""
 
@@ -105,6 +105,13 @@ int getAirScore(int temp, int humi)
   return score;
 }
 
+String status;
+void validate(int num)
+{
+  if(num > 0) status="True";
+  else status="False";
+}
+
 void loop()
 {                        
   int chk = DHT11.read(D5);
@@ -142,14 +149,17 @@ void loop()
     digitalWrite(D4, LOW);
   }
 
+  validate(airScore);
+
   InfluxData row("data"); // Insert data to InfluxDB
-  row.addTag("device", DEVICE_NAME);
-  row.addTag("device_id", DEVICE_ID);
-  row.addTag("device_register_date", DEVICE_REGISTER_DATE);
+  // row.addTag("device_model", DEVICE_MODEL);
+  row.addTag("device", DEVICE_ID);
+  // row.addTag("device_register_date", DEVICE_REGISTER_DATE);
   row.addTag("location", DEVICE_LOCATION);
   row.addValue("temperature", (float)DHT11.temperature);
   row.addValue("humidity", (float)DHT11.humidity);
   row.addValue("score", airScore);
+  row.addTag("online", status);
   influx.write(row);
   
   delay(5000); // Delay 5 seconds

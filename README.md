@@ -1,5 +1,7 @@
 # Web-based Hybrid IoT Platform
 
+## 이 프로젝트는 현재 개발 진행 중입니다
+
 IoT를 통해 정보를 전송하고 분석하는 웹사이트입니다
 
 <br>
