@@ -4,43 +4,53 @@
  */
 
 #include <ESP8266WiFiMulti.h>
-#include <ESP8266HTTPClient.h>
+#include <InfluxDb.h>
 #include <LiquidCrystal_I2C.h>
 #include <dht11.h>
+
+/* INFLUXDB_HOST: Enter the host address of the InfluxDB server.
+ * INFLUXDB_PORT: Default value is 8086. Change this value if you've changed the InfluxDB port.
+ * INFLUXDB_DATABASE: Enter name of the database which the data will be inserted.
+ * INFLUXDB_USER/PASS: Enter the username/password of the InfluxDB for authentication.
+ */
+#define INFLUXDB_HOST "address"
+#define INFLUXDB_PORT 8086
+#define INFLUXDB_DATABASE "database"
+#define INFLUXDB_USER "user"
+#define INFLUXDB_PASS "password"
 
 /* DEVICE_ID: Enter 6-digit unique ID for recognizing the device information. 
  *  ID should be formatted as Country, City, District, Village, and 2-digit number.
  * DEVICE_MODEL: Enter name of the hardware.
+ * DEVICE_LOCATION: Enter location.
  * DEVICE_REGISTER_DATE: Enter the device's first running date. (YY/MM/DD)
  */
 #define DEVICE_ID ""
 #define DEVICE_MODEL "ESP8266" 
+#define DEVICE_LOCATION "location"
 #define DEVICE_REGISTER_DATE ""
-
-String database_host = "http://url";
 
 #define WIFI_SSID "ssid" // WiFi Information
 #define WIFI_PASS "password"
 
+ESP8266WiFiMulti WiFiMulti;
 LiquidCrystal_I2C lcd(0x27, D1, D2);
+Influxdb influx(INFLUXDB_HOST, INFLUXDB_PORT); // Connect to InfluxDB
 dht11 DHT11;
-WiFiClient client;
-HTTPClient http;
 
 void setup()
 {
   Serial.begin(115200); // Set boardrate to 115200
 
-  WiFi.begin(WIFI_SSID, WIFI_PASS);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
+  WiFiMulti.addAP(WIFI_SSID, WIFI_PASS); // Connect to WiFi
+  while (WiFiMulti.run() != WL_CONNECTED) {
+    delay(100); // Delay 0.1 seconds
   }
-  Serial.println("");
-  Serial.print("Connecting to ");
-  Serial.println(WIFI_SSID);
-  Serial.print("IP address: ");
+  Serial.println("WiFi has been connected");
+  Serial.print("IP: ");
   Serial.println(WiFi.localIP());
+
+  influx.setDbAuth(INFLUXDB_DATABASE, INFLUXDB_USER, INFLUXDB_PASS);
 
   lcd.begin(); // Start LCD display
   lcd.backlight();
@@ -140,23 +150,17 @@ void loop()
   }
 
   validate(airScore);
-  
-  String webhost = database_host + "/mysql_insert.php?device_id="+String(DEVICE_ID)+"&airscore="+String(airScore)+"&temperature="+String((float)DHT11.temperature, 0)+"&humidity="+String((float)DHT11.humidity, 0);
-  http.begin(client, webhost);
-  http.setTimeout(1000);
-  int httpCode = http.GET();
-  
-  if(httpCode > 0) {
-    Serial.printf("\nGET result : %d\n\n", httpCode);
- 
-    if(httpCode == HTTP_CODE_OK) {
-      String payload = http.getString();
-      Serial.println(payload);
-    }
-  }else{
-    Serial.printf("\nGET failed, error: %s\n", http.errorToString(httpCode).c_str());
-  }
-  http.end();
 
-  delay(10000); // Delay 10 seconds
+  InfluxData row("data"); // Insert data to InfluxDB
+  // row.addTag("device_model", DEVICE_MODEL);
+  row.addTag("device", DEVICE_ID);
+  // row.addTag("device_register_date", DEVICE_REGISTER_DATE);
+  row.addTag("location", DEVICE_LOCATION);
+  row.addValue("temperature", (float)DHT11.temperature);
+  row.addValue("humidity", (float)DHT11.humidity);
+  row.addValue("score", airScore);
+  row.addTag("online", status);
+  influx.write(row);
+  
+  delay(5000); // Delay 5 seconds
 }
