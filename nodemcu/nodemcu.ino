@@ -7,6 +7,8 @@
 #include <ESP8266HTTPClient.h>
 #include <LiquidCrystal_I2C.h>
 #include <dht11.h>
+#include <SoftwareSerial.h>
+#include <MHZ19.h>
 
 /* DEVICE_ID: Enter 6-digit unique ID for recognizing the device information. 
  *  ID should be formatted as Country, City, District, Village, and 2-digit number.
@@ -22,10 +24,13 @@ String database_host = "http://url";
 #define WIFI_SSID "ssid" // WiFi Information
 #define WIFI_PASS "password"
 
-LiquidCrystal_I2C lcd(0x27, D1, D2);
-dht11 DHT11;
 WiFiClient client;
 HTTPClient http;
+LiquidCrystal_I2C lcd(0x27, D1, D2);
+
+SoftwareSerial ss(D7,D8);
+MHZ19 mhz(&ss);
+dht11 DHT11;
 
 void setup()
 {
@@ -48,6 +53,8 @@ void setup()
 
   pinMode(D0, OUTPUT); // Set LEDs to output mode
   pinMode(D4, OUTPUT);
+
+  ss.begin(9600);
 }
 
 int getAirScore(int temp, int humi)
@@ -113,8 +120,10 @@ void loop()
   Serial.print("Temperature: "); // Get temperature value from DHT11 sensor             
   Serial.print((float)DHT11.temperature, 2);
   Serial.println("C");
+  Serial.print(F("CO2: "));
+  Serial.println(mhz.getCO2());
   Serial.print("AirScore: ");             
-  Serial.print(airScore);
+  Serial.println(airScore);
   
   lcd.clear(); // Display Temperature and Humidity to LCD display
   lcd.print("Temp:");
@@ -122,6 +131,11 @@ void loop()
   lcd.print((float)DHT11.temperature, 0);
   lcd.setCursor(9,0);
   lcd.print("C");
+
+  lcd.setCursor(12,0);
+  lcd.print("CO2:");
+  lcd.setCursor(12,1);
+  lcd.print(mhz.getCO2());
   
   lcd.setCursor(0,1);
   lcd.print("Humi:");
@@ -141,7 +155,7 @@ void loop()
 
   validate(airScore);
   
-  String webhost = database_host + "/mysql_insert.php?device_id="+String(DEVICE_ID)+"&airscore="+String(airScore)+"&temperature="+String((float)DHT11.temperature, 0)+"&humidity="+String((float)DHT11.humidity, 0);
+  String webhost = database_host + "/api/insert.php?device_id="+String(DEVICE_ID)+"&airscore="+String(airScore)+"&co2="+String(mhz.getCO2())+"&temperature="+String((float)DHT11.temperature, 0)+"&humidity="+String((float)DHT11.humidity, 0);
   http.begin(client, webhost);
   http.setTimeout(1000);
   int httpCode = http.GET();
