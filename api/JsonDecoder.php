@@ -70,4 +70,109 @@
 		return $result;
 	}
 
+	function getWeekDate($device_id, $day)
+	{
+		if($day < 0 || $day > 6)
+		{
+			$error = "Day value should be between 6 and 0";
+			return $error;
+		}
+
+		$offset = 6 - $day;
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json[$offset]['date_format_' . $day] != null) {
+			$result = $json[$offset]['date_format_' . $day];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
+	function getWeekAirScore($device_id, $day)
+	{
+		if($day < 0 || $day > 6)
+		{
+			$error = "Day value should be between 6 and 0";
+			return $error;
+		}
+
+		$offset = 6 - $day;
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json[$offset]['airscore_' . $day] != null) {
+			$result = $json[$offset]['airscore_' . $day];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
+	function getWeekCo2($device_id, $day)
+	{
+		if($day < 0 || $day > 6)
+		{
+			$error = "Day value should be between 6 and 0";
+			return $error;
+		}
+
+		$offset = 6 - $day;
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json[$offset]['co2_' . $day] != null) {
+			$result = $json[$offset]['co2_' . $day];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
+	function getWeekTemperature($device_id, $day)
+	{
+		if($day < 0 || $day > 6)
+		{
+			$error = "Day value should be between 6 and 0";
+			return $error;
+		}
+
+		$offset = 6 - $day;
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json[$offset]['temperature_' . $day] != null) {
+			$result = $json[$offset]['temperature_' . $day];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
+	function getWeekHumidity($device_id, $day)
+	{
+		if($day < 0 || $day > 6)
+		{
+			$error = "Day value should be between 6 and 0";
+			return $error;
+		}
+
+		$offset = 6 - $day;
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json[$offset]['humidity_' . $day] != null) {
+			$result = $json[$offset]['humidity_' . $day];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
 ?>
