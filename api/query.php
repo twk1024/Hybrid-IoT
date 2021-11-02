@@ -15,7 +15,7 @@ while($result = $sql->fetch_array())
     'humidity' => $result["Humidity"]];
     
     header('Content-type: application/json'); 
-    echo json_encode($json);
+    echo json_encode($json, JSON_PRETTY_PRINT);
 }
 mysqli_close($conn);
 
