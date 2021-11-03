@@ -57,9 +57,20 @@ void setup()
   ss.begin(9600);
 }
 
-int getAirScore(int temp, int humi)
+int getAirScore(int co2, int temp, int humi)
 {
   int score = 100;
+
+  // CO2 score calculation
+  if(co2 >= 900) score = score - 30;
+  else if(co2 >= 850 && co2 < 900) score = score - 26;
+  else if(co2 >= 800 && co2 < 850) score = score - 22;
+  else if(co2 >= 750 && co2 < 800) score = score - 18;
+  else if(co2 >= 700 && co2 < 750) score = score - 14;
+  else if(co2 >= 650 && co2 < 700) score = score - 10;
+  else if(co2 >= 600 && co2 < 650) score = score - 6;
+  else if(co2 >= 550 && co2 < 600) score = score - 2;
+  else if(co2 < 550) score = score - 0;
 
   // Temperature score calculation
   if(temp >= 40) score = score - 30;
@@ -112,7 +123,7 @@ void validate(int num)
 void loop()
 {                        
   int chk = DHT11.read(D5);
-  int airScore = getAirScore(DHT11.temperature, DHT11.humidity);
+  int airScore = getAirScore(mhz.getCO2(), DHT11.temperature, DHT11.humidity);
   
   Serial.print("\nHumidity: "); // Get humidity value from DHT11 sensor             
   Serial.print((float)DHT11.humidity, 2);
