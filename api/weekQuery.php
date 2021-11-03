@@ -9,10 +9,17 @@ $i = 6; // 6=today, 5=yesterday ...
 $data = [];
 while($result = $sql->fetch_array())
 {
+    if($result["AVG(AirScore)"] >= 96) $status = "매우 좋음";
+    else if($result["AVG(AirScore)"] >= 90 && $result["AVG(AirScore)"] < 96) $status = "좋음";
+    else if($result["AVG(AirScore)"] >= 80 && $result["AVG(AirScore)"] < 90) $status = "보통";
+    else if($result["AVG(AirScore)"] >= 70 && $result["AVG(AirScore)"] < 80) $status = "나쁨";
+    else if($result["AVG(AirScore)"] >= 0 && $result["AVG(AirScore)"] < 70) $status = "매우 나쁨";
+
     $json = [ 'device_id_' . $i => $result["DEVICE_ID"],
     'date_' . $i => $result["MAX(Date)"],
     'date_format_' . $i => $result["m"], 
     'airscore_' . $i => $result["AVG(AirScore)"],
+    'airscore_status_' . $i => $status,
     'co2_' . $i => $result["AVG(CO2)"], 
     'temperature_' . $i => $result["AVG(Temperature)"], 
     'humidity_' . $i => $result["AVG(Humidity)"]];
@@ -22,7 +29,7 @@ while($result = $sql->fetch_array())
 }
 
 header('Content-type: application/json'); 
-echo json_encode($data, JSON_PRETTY_PRINT);
+echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 mysqli_close($conn);
 
