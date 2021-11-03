@@ -2,7 +2,7 @@
 
 	function getLastDate($device_id)
 	{
-		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id);
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id . "&limit=1");
 		$json = json_decode($api, true);
 
 		if ($json['date'] != null) {
@@ -16,7 +16,7 @@
 
 	function getAirScore($device_id)
 	{
-		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id);
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id . "&limit=1");
 		$json = json_decode($api, true);
 
 		if ($json['airscore'] != null) {
@@ -28,9 +28,23 @@
 		return $result;
 	}
 
+	function getAirScoreStatus($device_id)
+	{
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id . "&limit=1");
+		$json = json_decode($api, true);
+
+		if ($json['airscore_status'] != null) {
+			$result = $json['airscore_status'];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
 	function getCo2($device_id)
 	{
-		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id);
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id . "&limit=1");
 		$json = json_decode($api, true);
 
 		if ($json['co2'] != null) {
@@ -44,7 +58,7 @@
 
 	function getTemperature($device_id)
 	{
-		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id);
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id . "&limit=1");
 		$json = json_decode($api, true);
 
 		if ($json['temperature'] != null) {
@@ -56,9 +70,23 @@
 		return $result;
 	}
 
+	function isOnline($device_id)
+	{
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/onlineChecker.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json['online'] != null) {
+			$result = $json['online'];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
 	function getHumidity($device_id)
 	{
-		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id);
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/query.php?device_id=' . $device_id . "&limit=1");
 		$json = json_decode($api, true);
 
 		if ($json['humidity'] != null) {
@@ -78,12 +106,11 @@
 			return $error;
 		}
 
-		$offset = 6 - $day;
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['date_format_' . $day] != null) {
-			$result = $json[$offset]['date_format_' . $day];
+		if ($json[$day]['date_format'] != null) {
+			$result = $json[$day]['date_format'];
 		}else{
 			$result = "Unknown";
 		}
@@ -99,12 +126,31 @@
 			return $error;
 		}
 
-		$offset = 6 - $day;
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['airscore_' . $day] != null) {
-			$result = $json[$offset]['airscore_' . $day];
+		if ($json[$offset]['airscore'] != null) {
+			$result = $json[$offset]['airscore'];
+		}else{
+			$result = "Unknown";
+		}
+
+		return $result;
+	}
+
+	function getWeekAirScoreStatus($device_id, $day)
+	{
+		if($day < 0 || $day > 6)
+		{
+			$error = "Day value should be between 6 and 0";
+			return $error;
+		}
+
+		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
+		$json = json_decode($api, true);
+
+		if ($json[$offset]['airscore_status'] != null) {
+			$result = $json[$offset]['airscore_status'];
 		}else{
 			$result = "Unknown";
 		}
@@ -120,12 +166,11 @@
 			return $error;
 		}
 
-		$offset = 6 - $day;
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['co2_' . $day] != null) {
-			$result = $json[$offset]['co2_' . $day];
+		if ($json[$day]['co2'] != null) {
+			$result = $json[$day]['co2'];
 		}else{
 			$result = "Unknown";
 		}
@@ -141,12 +186,11 @@
 			return $error;
 		}
 
-		$offset = 6 - $day;
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['temperature_' . $day] != null) {
-			$result = $json[$offset]['temperature_' . $day];
+		if ($json[$day]['temperature'] != null) {
+			$result = $json[$day]['temperature'];
 		}else{
 			$result = "Unknown";
 		}
@@ -162,12 +206,11 @@
 			return $error;
 		}
 
-		$offset = 6 - $day;
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['humidity_' . $day] != null) {
-			$result = $json[$offset]['humidity_' . $day];
+		if ($json[$day]['humidity'] != null) {
+			$result = $json[$day]['humidity'];
 		}else{
 			$result = "Unknown";
 		}

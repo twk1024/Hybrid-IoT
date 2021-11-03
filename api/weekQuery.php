@@ -5,7 +5,6 @@ $device_id = $_GET['device_id'];
 
 $sql = query("SELECT DATE_FORMAT(Date,'%Y-%m-%d') m, MAX(Date), DEVICE_ID, AVG(AirScore), AVG(CO2), AVG(Temperature), AVG(Humidity) FROM $device_id GROUP BY m DESC LIMIT 7");
 
-$i = 6; // 6=today, 5=yesterday ...
 $data = [];
 while($result = $sql->fetch_array())
 {
@@ -15,16 +14,15 @@ while($result = $sql->fetch_array())
     else if($result["AVG(AirScore)"] >= 70 && $result["AVG(AirScore)"] < 80) $status = "나쁨";
     else if($result["AVG(AirScore)"] >= 0 && $result["AVG(AirScore)"] < 70) $status = "매우 나쁨";
 
-    $json = [ 'device_id_' . $i => $result["DEVICE_ID"],
-    'date_' . $i => $result["MAX(Date)"],
-    'date_format_' . $i => $result["m"], 
-    'airscore_' . $i => $result["AVG(AirScore)"],
-    'airscore_status_' . $i => $status,
-    'co2_' . $i => $result["AVG(CO2)"], 
-    'temperature_' . $i => $result["AVG(Temperature)"], 
-    'humidity_' . $i => $result["AVG(Humidity)"]];
+    $json = [ 'device_id' => $result["DEVICE_ID"],
+    'date' => $result["MAX(Date)"],
+    'date_format' => $result["m"], 
+    'airscore' => $result["AVG(AirScore)"],
+    'airscore_status' => $status,
+    'co2' => $result["AVG(CO2)"], 
+    'temperature' => $result["AVG(Temperature)"], 
+    'humidity' => $result["AVG(Humidity)"]];
 
-    $i--;
     array_push($data, $json);
 }
 
