@@ -1,24 +1,23 @@
-# Web-based Hybrid IoT Platform
+# Hybrid IoT Platform
 
-## 이 프로젝트는 현재 개발 진행 중입니다
+사물인터넷 기술을 통해 공기질 정보를 측정하고 분석하는 IoT 플랫폼입니다
 
-IoT를 통해 정보를 전송하고 분석하는 웹사이트입니다
+![Screenshot](/img/demo.webp)
 
 <br>
 
-# 프로젝트 구조
+# 웹사이트
 
--   backend-node: Node.js로 구성된 백엔드입니다. API 및 데이터베이스 연동 역할을 합니다.
--   frontend-vue: Vue.js로 구성된 프론트엔드입니다. 사용자에게 보여지는 프론트엔드를 구현합니다.
--   nodemcu: 실제 온도/습도를 측정하기 위한 NodeMCU 하드웨어의 작동 코드 및 라이브러리입니다.
+- https://hybrid.diamc.kr
+
 
 <br>
 
 # 기능
 
--   하드웨어로부터 실시간 옵도/습도 정보 수집
--   실시간 그래프를 통해 온도/습도 비교 및 분석
+-   하드웨어로부터 실시간 CO2, 옵도, 습도 정보 수집
+-   공기질 점수를 통해 CO2, 온도, 습도 비교 및 분석
 -   현재 공기질 상태 정보 제공
--   외부에서 사용가능한 API 제공
+-   REST API 제공
 
 <br>
