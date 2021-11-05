@@ -129,8 +129,8 @@
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['airscore'] != null) {
-			$result = $json[$offset]['airscore'];
+		if ($json[$day]['airscore'] != null) {
+			$result = $json[$day]['airscore'];
 		}else{
 			$result = "Unknown";
 		}
@@ -149,8 +149,8 @@
 		$api =  file_get_contents('http://hybrid.diamc.kr/api/weekQuery.php?device_id=' . $device_id);
 		$json = json_decode($api, true);
 
-		if ($json[$offset]['airscore_status'] != null) {
-			$result = $json[$offset]['airscore_status'];
+		if ($json[$day]['airscore_status'] != null) {
+			$result = $json[$day]['airscore_status'];
 		}else{
 			$result = "Unknown";
 		}

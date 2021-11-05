@@ -377,9 +377,9 @@
                 <div class="modal-body">
                             <?php
                                 echo "{<br>";
-                                echo "&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
-                                echo "&nbsp;&nbsp; \"online\": \"" . isOnline("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"date\": \"" . getLastDate("KSGG01") . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"online\": \"" . isOnline("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"date\": \"" . getLastDate("KSGG01") . "\"<br>";
                                 echo "}";
                             ?>
                 </div>

@@ -339,7 +339,7 @@
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                                             aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#QueryAPIModal">API 응답 본문</a>
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#WeekQueryAPIModal">API 응답 본문</a>
                                         </div>
                                     </div>
                                 </div>
@@ -498,13 +498,13 @@
                 <div class="modal-body">
                             <?php
                                 echo "{<br>";
-                                echo "&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
-                                echo "&nbsp;&nbsp; \"date\": \"" . getLastDate("KSGG01") . "\"<br>";
-                                echo "&nbsp;&nbsp; \"airscore\": \"" . getAirScore("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"airscore_status\": \"" . getAirScoreStatus("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"co2\": \"" . getCo2("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"temperature\": \"" . getTemperature("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"humidity\": \"" . getHumidity("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"date\": \"" . getLastDate("KSGG01") . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"airscore\": \"" . getAirScore("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"airscore_status\": \"" . getAirScoreStatus("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"co2\": \"" . getCo2("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"temperature\": \"" . getTemperature("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"humidity\": \"" . getHumidity("KSGG01")  . "\"<br>";
                                 echo "}";
                             ?>
                 </div>
@@ -515,6 +515,66 @@
             </div>
         </div>
     </div>
+
+   <!-- QueryAPI Modal-->
+   <div class="modal fade" id="WeekQueryAPIModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Hybrid-IoT REST API Result</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                            
+                    </button>
+                </div>
+                <div class="modal-body">
+                            <?php
+                                echo "[<br>";
+                                
+                                echo "&nbsp;&nbsp;&nbsp;{<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"date\": \"" . getWeekDate("KSGG01", 0) . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"airscore\": \"" . getWeekAirScore("KSGG01", 0)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"airscore_status\": \"" . getWeekAirScoreStatus("KSGG01", 0)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"co2\": \"" . getWeekCo2("KSGG01", 0)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"temperature\": \"" . getWeekTemperature("KSGG01", 0)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"humidity\": \"" . getWeekHumidity("KSGG01", 0)  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp;},<br>";
+
+                                echo "&nbsp;&nbsp;&nbsp;{<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"date\": \"" . getWeekDate("KSGG01", 1) . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"airscore\": \"" . getWeekAirScore("KSGG01", 1)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"airscore_status\": \"" . getWeekAirScoreStatus("KSGG01", 1)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"co2\": \"" . getWeekCo2("KSGG01", 1)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"temperature\": \"" . getWeekTemperature("KSGG01", 1)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"humidity\": \"" . getWeekHumidity("KSGG01", 1)  . "\"<br>";
+                                echo "&nbsp;&nbsp;},<br>";
+
+                                echo "&nbsp;&nbsp;&nbsp;{<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"date\": \"" . getWeekDate("KSGG01", 2) . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"airscore\": \"" . getWeekAirScore("KSGG01", 2)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"airscore_status\": \"" . getWeekAirScoreStatus("KSGG01", 1)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"co2\": \"" . getWeekCo2("KSGG01", 2)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"temperature\": \"" . getWeekTemperature("KSGG01", 2)  . "\"<br>";
+                                echo "&nbsp;&nbsp&nbsp;&nbsp;&nbsp; \"humidity\": \"" . getWeekHumidity("KSGG01", 2)  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp;},<br>";
+
+                                echo "&nbsp;&nbsp;&nbsp;...<br><br>";
+
+                                echo "]";
+                            ?>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">닫기</button>
+                    <a class="btn btn-primary" href="http://hybrid.diamc.kr/api/weekQuery.php?device_id=KSGG01" target="_blank">자세히 보기</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

@@ -269,7 +269,7 @@
                                     <tbody>
                                     <?php
                                         $device_id = "KSGG01";
-                                        $sql = query("SELECT * FROM $device_id ORDER BY Date DESC LIMIT 5000");
+                                        $sql = query("SELECT * FROM $device_id ORDER BY Date DESC LIMIT 3000");
                                         while($result = $sql->fetch_array())
                                         {
                                             echo "<tr>";
@@ -382,13 +382,13 @@
                 <div class="modal-body">
                             <?php
                                 echo "{<br>";
-                                echo "&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
-                                echo "&nbsp;&nbsp; \"date\": \"" . getLastDate("KSGG01") . "\"<br>";
-                                echo "&nbsp;&nbsp; \"airscore\": \"" . getAirScore("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"airscore_status\": \"" . getAirScoreStatus("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"co2\": \"" . getCo2("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"temperature\": \"" . getTemperature("KSGG01")  . "\"<br>";
-                                echo "&nbsp;&nbsp; \"humidity\": \"" . getHumidity("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"device_id\": \"KSGG01\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"date\": \"" . getLastDate("KSGG01") . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"airscore\": \"" . getAirScore("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"airscore_status\": \"" . getAirScoreStatus("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"co2\": \"" . getCo2("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"temperature\": \"" . getTemperature("KSGG01")  . "\"<br>";
+                                echo "&nbsp;&nbsp;&nbsp; \"humidity\": \"" . getHumidity("KSGG01")  . "\"<br>";
                                 echo "}";
                             ?>
                 </div>
