@@ -269,7 +269,7 @@
                                     <tbody>
                                     <?php
                                         $device_id = "KSGG01";
-                                        $sql = query("SELECT * FROM $device_id ORDER BY Date DESC LIMIT 3000");
+                                        $sql = query("SELECT * FROM $device_id ORDER BY Date DESC LIMIT 50");
                                         while($result = $sql->fetch_array())
                                         {
                                             echo "<tr>";

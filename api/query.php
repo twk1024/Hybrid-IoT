@@ -26,7 +26,7 @@ if($limit == 1){
         header('Content-type: application/json'); 
         echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
     }
-}else{
+}else if($limit > 1 && $limit <= 50){
     $data = [];
     while($result = $sql->fetch_array())
     {
@@ -48,6 +48,16 @@ if($limit == 1){
     }
     header('Content-type: application/json'); 
     echo json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+}else if($limit > 50){
+    $json = ['Warning' => "Limit value must be less than 50"];
+        
+    header('Content-type: application/json'); 
+    echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+}else if($limit < 1){
+    $json = ['Warning' => "Limit value must be larger than 1"];
+        
+    header('Content-type: application/json'); 
+    echo json_encode($json, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 }
 mysqli_close($conn);
 
